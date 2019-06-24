@@ -49,7 +49,7 @@ class Director():
               self.os_path, '\n')
         
     def deleter(self):
-        pass ##
+        pass ####
 
 
 
