@@ -1,4 +1,9 @@
-import os, requests, shutil, json
+import os
+import requests
+import shutil
+import json
+import threading
+import time
 
 retrowave = 'https://retrowave.ru'
 if not os.path.exists(os.getcwd() + '/media'):
@@ -7,7 +12,7 @@ PLAYLIST = []
 HISTORY = []
 DOWNLOAD_ALL_MODE = 0
 
-class Playlist():
+class Playlist:
 
     def __init__(self):
         global PLAYLIST
@@ -22,13 +27,21 @@ class Playlist():
         pic = str(DATA['body']['tracks'][0]['artworkUrl']).strip()
         stack = (title, audio, duration, pic)
         self.playlist.append(stack)
-        if len(self.playlist) < 2:
-            self.newGET()
+##        if len(self.playlist) < 2:
+##            self.newGET()
         return PLAYLIST
 
-    def addGET(self):
-        self.newGET()
-        if DOWNLOAD_ALL_MODE == 0:
-            if len(self.playlist) > 3:
-                global HISTORY
-                HISTORY += self.playlist.pop(0)
+##    def addGET(self):
+##        self.newGET()
+##        if DOWNLOAD_ALL_MODE == 0:
+##            if len(self.playlist) > 3: #воткнуть в др. место
+##                global HISTORY
+##                HISTORY += self.playlist.pop(0)
+
+##def test_playlist():
+##    p = Playlist() #воткнуть в др. место
+##    t1 = threading.Thread(target = p.newGET())
+##
+##test_playlist()
+##print(PLAYLIST)
+    
