@@ -22,6 +22,15 @@ class Playlist:
         GET = requests.get(apiURL)
         DATA = GET.json()
         title = str(DATA['body']['tracks'][0]['title']).strip()
+
+        np = ["?", "\"", "\\", "<", ">", ":", "|", "/",]
+        a = []
+        for i in range(len(title)):
+            if title[i] in np:
+                a.append(title[i])
+        for n in a:
+            title = title.replace(n, "")
+        
         audio = str(DATA['body']['tracks'][0]['streamUrl']).strip()
         duration = DATA['body']['tracks'][0]['duration']
         pic = str(DATA['body']['tracks'][0]['artworkUrl']).strip()
