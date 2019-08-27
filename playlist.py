@@ -13,6 +13,7 @@ HISTORY = []
 DOWNLOAD_ALL_MODE = 0
 
 class Playlist:
+    """ Class makes GET => JSON => list """
 
     def __init__(self):
         global PLAYLIST
@@ -36,21 +37,5 @@ class Playlist:
         pic = str(DATA['body']['tracks'][0]['artworkUrl']).strip()
         stack = (title, audio, duration, pic)
         self.playlist.append(stack)
-##        if len(self.playlist) < 2:
-##            self.newGET()
+
         return PLAYLIST
-
-##    def addGET(self):
-##        self.newGET()
-##        if DOWNLOAD_ALL_MODE == 0:
-##            if len(self.playlist) > 3: #воткнуть в др. место
-##                global HISTORY
-##                HISTORY += self.playlist.pop(0)
-
-##def test_playlist():
-##    p = Playlist() #воткнуть в др. место
-##    t1 = threading.Thread(target = p.newGET())
-##
-##test_playlist()
-##print(PLAYLIST)
-    

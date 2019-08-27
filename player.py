@@ -4,62 +4,54 @@ import pygame
 import playlist
 import director
 
-PLAYING = False
-POS = -2
-
-class Player():
+class Player(director.Director):
 
     def __init__(self):
+        super().__init__()
+        self.POS = -2
+        self.PLAYING = False
         pygame.mixer.init()
-        d = director.Director()
-        d.preDownload()
-        self.song = d.list
-        self.TITLE = []
-        self.MP3 = []
-        self.TIME = []
-        self.PIC = []
-        if len(self.song) < 2:
-            self.__init__()
-        for i in range(len(self.song)):                     
-            self.TITLE += [self.song[i][0]]
-            self.MP3 += [playlist.retrowave + self.song[i][1]]
-            self.TIME += [self.song[i][2]]
-            self.PIC += [playlist.retrowave + self.song[i][3]]
+        self.preDownload()
 
-    def play(self, POS):
+        if len(self.list) < 2:
+            self.__init__()       
+
+    def play(self):
         pygame.mixer.music.load(os.getcwd() +
                                 '/' + 'media' + '/' +
-                                self.TITLE[POS] + '/' + self.TITLE[POS] + '.mp3')
+                                self.TITLE[self.POS] + '/' + self.TITLE[self.POS] + '.mp3')
         pygame.mixer.music.play()
-        print(self.TITLE[POS])
+        self.PLAYING = True
+        print(self.TITLE[self.POS])
 
     def pause(self):
         pygame.mixer.music.pause()
+        self.PLAYING = False
 
     def new_song(self):
-        time.sleep(1)
-        self.play(POS)
+        self.pause()
+##        time.sleep(1)
         self.__init__()
+        self.play()
         
     def prev_song(self):
-        time.sleep(1)
-        global POS
-        POS -= 1
-        assert POS < 0
-        if (-POS) > len(self.TITLE):
-            POS += 1
-        self.play(POS)
+        self.pause()
+##        time.sleep(1)
+        self.POS -= 1
+        assert self.POS < 0
+        if -(self.POS) > len(self.TITLE):
+            self.POS += 1
+        self.play()
 
     def next_song(self):
-        time.sleep(1)
-        global POS
-        POS += 1
-        assert POS <= 0
-        if POS >= (-1):
+        self.pause()
+##        time.sleep(1)
+        self.POS += 1
+        assert self.POS <= 0
+        if self.POS >= (-1):
             self.new_song()
-            POS -= 1
-        else:    
-            self.play(POS)
+        else:
+            self.play()
         
         
         

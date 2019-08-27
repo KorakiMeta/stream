@@ -1,17 +1,17 @@
 import os
 import shutil
 import requests
-import threading
+# import threading mb aiofiles?
 import playlist
 
 RUN = False
 CAN_PLAY = []
-HISTORY = []
+direct = os.getcwd() + '/media/'
 
 class Director:
+    """ Downloads from server """
        
     def __init__(self):
-        """init method, also update"""
         p = playlist.Playlist()
         p.newGET()    
         self.list = playlist.PLAYLIST
@@ -19,18 +19,28 @@ class Director:
         self.MP3 = []
         self.TIME = []
         self.PIC = []
+        self.IMG = []
         self.os_path = []
+        self.TIMER = []
         for i in range(len(self.list)):                     
             self.TITLE += [self.list[i][0]]
             self.MP3 += [playlist.retrowave + self.list[i][1]]
             self.TIME += [self.list[i][2]]
+            M = int(self.list[i][2] / 1000 // 60) #если что, здесь возможна погрешность
+            S = int((self.list[i][2] / 1000) - (self.list[i][2] / 1000 // 60) * 60)
+            if S < 10:
+                T = '{0}:0{1}'.format(M, S)
+            else:
+                T = '{0}:{1}'.format(M, S)
+            self.TIMER += [T]
             self.PIC += [playlist.retrowave + self.list[i][3]]
+            artwork = self.list[i][0] + self.list[i][3].replace('/artwork', '')
+            self.IMG += [direct + artwork]
             self.os_path += ['media/' + self.list[i][0]]
                 
     def preDownload(self):
         """Predownloading for playing"""
-##        if len(self.list) < 2:
-##            Director().__init__()
+
         for i in range(len(self.list)):
             if not os.path.exists(self.os_path[i]) and requests.get(self.MP3[i], stream = True).status_code == 200:
                 """Creates new directory"""
@@ -55,23 +65,8 @@ class Director:
               self.MP3, '\n',
               self.TIME, '\n',
               self.PIC, '\n',
+              self.IMG, '\n',
               self.os_path, '\n')
-##            if len(self.list) > 3:
-##                global HISTORY
-##                HISTORY += self.list.pop(0)
-
-    def update(self):
-        p = playlist.Playlist()
-        self.list += p.newGET()
-        
-        
+      
     def deleter(self):
         pass
-
-
-
-
-
-
-
-        
